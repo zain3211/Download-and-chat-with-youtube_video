@@ -195,6 +195,8 @@ def main():
                     if downloaded_file_path:
                         st.text("Downloaded video file path:")
                         st.text(downloaded_file_path)
+                        #  After downloading the video
+                        st.markdown(f"Download your file [here]({downloaded_file_path})", unsafe_allow_html=True)
 
     if st.sidebar.button("Download Audio"):
         if not video_url:
