@@ -195,8 +195,8 @@ def main():
                     if downloaded_file_path:
                         st.text("Downloaded video file path:")
                         st.text(downloaded_file_path)
-                        #  After downloading the video
-                        st.markdown(f"Download your file [here]({downloaded_file_path})", unsafe_allow_html=True)
+                        relative_url = os.path.relpath(downloaded_file_path, "/home/appuser")
+                        st.markdown(f"Download your file [here]({relative_url})", unsafe_allow_html=True)
 
     if st.sidebar.button("Download Audio"):
         if not video_url:
@@ -207,6 +207,8 @@ def main():
                 if downloaded_audio_path:
                     st.text("Downloaded audio file path:")
                     st.text(downloaded_audio_path)
+                    relative_audio_path = os.path.relpath(downloaded_audio_path, start=os.getcwd())
+                    st.markdown(f"Download your audio file [here]({relative_audio_path})", unsafe_allow_html=True)
 
     if st.sidebar.button("Chat with Content"):
         if not video_url:
