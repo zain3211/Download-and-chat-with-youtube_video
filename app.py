@@ -184,6 +184,7 @@ def main():
 
     st.sidebar.title("Select any option to proceed:")
 
+    video_downloaded = False
     if st.sidebar.button("Download Video"):
         if not video_url:
             st.warning("Please enter a YouTube URL to download the video.")
@@ -193,11 +194,18 @@ def main():
                 with st.spinner("Downloading Video..."):
                     downloaded_file_path = download_youtube_video(video_url, selected_quality)
                     if downloaded_file_path:
-                        st.text("Downloaded video file path:")
-                        st.text(downloaded_file_path)
-                        relative_url = os.path.relpath(downloaded_file_path, "/home/appuser")
-                        st.markdown(f"Download your file [here]({relative_url})", unsafe_allow_html=True)
+                        video_downloaded = True
 
+    if video_downloaded:
+        # Provide a download button for the user
+        file_content = open(downloaded_file_path, 'rb').read()
+        st.download_button(
+            label="Click here to download",
+            data=file_content,
+            file_name=os.path.basename(downloaded_file_path),
+            key="download_button",
+        )
+    audio_downloaded = False
     if st.sidebar.button("Download Audio"):
         if not video_url:
             st.warning("Please enter a YouTube URL to download the Audio.")
@@ -205,11 +213,16 @@ def main():
             with st.spinner("Downloading Audio..."):
                 downloaded_audio_path = download_youtube_audio(video_url)
                 if downloaded_audio_path:
-                    st.text("Downloaded audio file path:")
-                    st.text(downloaded_audio_path)
-                    relative_audio_path = os.path.relpath(downloaded_audio_path, start=os.getcwd())
-                    st.markdown(f"Download your audio file [here]({relative_audio_path})", unsafe_allow_html=True)
-
+                    audio_downloaded = True
+    if audio_downloaded:
+        # Provide a download button for the user
+        file_content = open(downloaded_audio_path, 'rb').read()
+        st.download_button(
+            label="Click here to download",
+            data=file_content,
+            file_name=os.path.basename(downloaded_audio_path),
+            key="download_button",
+        )
     if st.sidebar.button("Chat with Content"):
         if not video_url:
             st.warning("Please enter a YouTube URL to chat with the video.")
